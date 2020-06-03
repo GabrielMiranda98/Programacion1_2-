@@ -120,14 +120,19 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 	    char auxN[128];
 	    int auxH;
 	    int auxS;
+	    int i;
+	    if(pArrayListEmployee!=NULL){
 
-	    printf("Ingrese ID de empleadx a modificar: ");
-	    scanf("%d", &idM);
-	    for(int i=0; i<ll_len(pArrayListEmployee); i++){
+
+	    if(utn_getNumero(&idM,"\nIngrese ID del empleado a modificar: \n",
+	   	            		"\nERROR OPCION NO VALIDA\n",0,ll_len(pArrayListEmployee),3)==0)
+	    {
+
+	    for(i=0; i<ll_len(pArrayListEmployee); i++){
 	        this = (Employee*) ll_get(pArrayListEmployee, i);
 	        if(idM == this->id){
-	            printf("\n  Id\t    Nombre\t  Horas trabajadas\tSueldo\n");
-	            printf("%4d%14s\t\t%d\t\t%6d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
+				printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
+				printf("%10d %19s %20d %25d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
 
 	        do{
 
@@ -172,12 +177,15 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 	            }
 	        }while(seguir == 1);
 	        }
-	    }
+	    }}
+	    else
+	    {
 	    printf("\nNo se ha encontrado empleado\n");
 	    return -1;
-
-
-}
+	    }
+	    } //PRIMER IF NULL
+return -1;
+}//ULTIMA LLAVE
 
 /** \brief Baja de empleado
  *
@@ -202,19 +210,19 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
 	    int retorno = -1;
 	    int i;
-	    Employee* this;
-	    if((ll_len(pArrayListEmployee))>0){
+	    Employee* auxP;
+	    if((ll_len(pArrayListEmployee))>0 &&pArrayListEmployee!=NULL){
 	    	printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
 	        for(i=0; i<ll_len(pArrayListEmployee); i++){
-	            this = ll_get(pArrayListEmployee, i);  //NO ME LO CARGA
+	            auxP = ll_get(pArrayListEmployee, i);  //NO ME LO CARGA
 	            printf("\n1\n");
-	            if(this != NULL){
+	            if(auxP != NULL){
 	            	printf("\n2\n");
-	            	printf("%10d %19s %20d %25d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
+	            	printf("%10d %19s %20d %25d\n", auxP->id,auxP->nombre,auxP->horasTrabajadas,auxP->sueldo);
 	            }
 	            else
 	            {
-	            	printf("\nTHIULO\n");
+	            	printf("\nTHIS NULO\n");
 	            }
 	        }
 	    }else{

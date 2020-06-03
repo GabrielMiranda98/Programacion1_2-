@@ -40,7 +40,7 @@ void employee_delete(Employee* this)
 
 //INICIO				 GETTER AND SETTER
 
-static int contadorID = 0;
+static int contadorID = 1;
 
 int employee_automaticId()
 {
