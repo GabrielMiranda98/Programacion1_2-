@@ -1,5 +1,6 @@
 /*
  * utn.c
+ *
  */
 
 #include <stdio.h>
@@ -31,7 +32,7 @@ static int esNumericade(char*cadena)
 	}
 return retorno;
 }
-int myGetse(char* cadena, int longitud)
+int myGets(char* cadena, int longitud)
 {
 	if(cadena!=NULL && longitud>0 && fgets(cadena,longitud,stdin)==cadena)
 	{
@@ -49,7 +50,7 @@ static int getIntsed(int*pResultado)
 	char buffer[64];
 	if(pResultado!=NULL)
 	{
-		if(myGetse(buffer,sizeof(buffer))==0 && esNumericade(buffer))
+		if(myGets(buffer,sizeof(buffer))==0 && esNumericade(buffer))
 		{
 			*pResultado = atoi(buffer);
 			retorno=0;
@@ -151,7 +152,7 @@ int isValidName(char* stringRecibido)
     }
     return retorno;
 }
-int utn_getUnsignedInt(  char* msg,char* msgError,int minSize,int maxSize,int min,int max,int reintentos,int* input)
+int utn_getUnsignedInt(char* msg,char* msgError,int minSize,int maxSize,int min,int max,int reintentos,int* input)
 {
     int retorno=-1;
     char bufferStr[maxSize];
@@ -167,6 +168,35 @@ int utn_getUnsignedInt(  char* msg,char* msgError,int minSize,int maxSize,int mi
                     *input=atoi(bufferStr);
                     retorno=0;
                     break;
+                }
+                else
+                {
+                    printf("%s",msgError);
+                    printf("Reintentos[%d]",reintentos);
+                    reintentos--;
+                }
+            }
+        }
+        while(reintentos>=0);
+    }
+    return retorno;
+}
+int utn_getNumberChar(char* msg,char* msgError,int minSize,int maxSize,int min,int max,int reintentos,char* input)
+{
+    int retorno=-1;
+    char bufferStr[maxSize];
+
+    if(msg!=NULL && msgError!=NULL && minSize<maxSize && min<max && reintentos>=0 && input!=NULL)
+    {
+        do
+        {
+            if(!getString(msg,msgError,minSize,maxSize,&reintentos,bufferStr))
+            {
+                if(isValidNumber(bufferStr)==1)
+                {
+                	strncpy(input,bufferStr,maxSize);
+                	retorno=0;
+                	break;
                 }
                 else
                 {
