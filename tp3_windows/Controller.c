@@ -67,20 +67,19 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 		char idStr[10], nombreStr[100], horasStr[9], sueldoStr[20];
 		if(pArrayListEmployee != NULL)
 			{
-				auxP= employee_new();
 
 				utn_getName("\nIngrese el nombre del empleado:\n","\nError\n",0,30,3,auxN);
 				utn_getUnsignedInt("\nIngrese las horas trabajadas:","\nError",1,50,1,5000,3,&auxH);
 				utn_getUnsignedInt("\nIngrese el sueldo:","\nError",1,30,1,100000,3,&auxS);
 				auxId=employee_automaticId();
 
-
-					itoa(auxH, horasStr, 10);
-					itoa(auxS, sueldoStr, 10);
-					itoa(auxId, idStr, 10);
+					sprintf(horasStr,"%d",auxH);
+					sprintf(sueldoStr,"%d",auxS);
+					sprintf(idStr,"%d",auxId);
 					strcpy(nombreStr,auxN);
-					auxP = employee_newParametros(idStr, nombreStr, horasStr, sueldoStr);
 
+
+					auxP = employee_newParametros(idStr, nombreStr, horasStr, sueldoStr);
 					if(!ll_add(pArrayListEmployee,auxP))
 					{
 						printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
@@ -136,17 +135,18 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 
 	        do{
 
-	            utn_getNumero(&option,"\nIngrese dato a modificar:\n1- Nombre\n2- Horas trabajadas\n3- Sueldo\n4- Cancelar \n",
+	            utn_getNumero(&option,"\nIngrese dato a modificar:\n1- Nombre\n2- Horas trabajadas\n3- Sueldo\n4- Cancelar\n",
 	            		"\nERROR OPCION NO VALIDA\n",1,4,3);
 
 	            switch(option){
 
 	            case 1:
+
 					utn_getName("\nIngrese el nombre del empleado:\n","\nError\n",0,30,3,auxN);
 
 	                employee_setNombre(this, auxN);
 	                printf("Desea continuar modificando al mismo empleado? ");
-	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO/n: \n",
+	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
 	             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
 	                if(seguir == 2){
 	                    return 0;
@@ -155,7 +155,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 	            case 2:
 					utn_getUnsignedInt("\nIngrese las horas trabajadas:","\nError",1,50,1,5000,3,&auxH);
 	                employee_setHorasTrabajadas(this, auxH);
-	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO/n: \n",
+	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
 	             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
 	                if(seguir == 2){
 	                    return 0;
@@ -164,7 +164,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 	            case 3:
 					utn_getUnsignedInt("\nIngrese el sueldo:","\nError",1,30,1,100000,3,&auxS);
 	            	employee_setSueldo(this, auxS);
-	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO/n: \n",
+	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
 	             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
 	                if(seguir == 2){
 	                    return 0;
@@ -210,14 +210,16 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
 	    int retorno = -1;
 	    int i;
-	    Employee* auxP;
+	    Employee* auxP=NULL;
 	    if((ll_len(pArrayListEmployee))>0 &&pArrayListEmployee!=NULL){
+
 	    	printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
 	        for(i=0; i<ll_len(pArrayListEmployee); i++){
-	            auxP = ll_get(pArrayListEmployee, i);  //NO ME LO CARGA
-	            printf("\n1\n");
-	            if(auxP != NULL){
-	            	printf("\n2\n");
+	            auxP = (Employee*)ll_get(pArrayListEmployee, i);  //NO ME LO CARGA
+
+
+	            if(auxP != NULL)
+	            {	retorno=0;
 	            	printf("%10d %19s %20d %25d\n", auxP->id,auxP->nombre,auxP->horasTrabajadas,auxP->sueldo);
 	            }
 	            else

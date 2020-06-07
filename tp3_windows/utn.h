@@ -1,7 +1,3 @@
-/*
- * utn.h
- *
- */
 
 #ifndef UTN_H_
 #define UTN_H_

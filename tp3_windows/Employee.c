@@ -6,8 +6,12 @@
 
 
 Employee* employee_new(void)
-{
-	return (Employee*)malloc(sizeof(Employee));
+{		Employee* auxP;
+
+	auxP=(Employee*)malloc(sizeof(Employee));
+
+	return auxP;
+
 }
 
 Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajadasStr, char* sueldo)
@@ -27,15 +31,19 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 			  strcpy(auxP->nombre,nombreStr);
 			  auxP->horasTrabajadas=horasTrabajadasAux;
 			  auxP->sueldo=sueldoAux;
+
 		  }
-		  return 0;
+		  return auxP;
 		}
-void employee_delete(Employee* this)
-{
+
+int employee_delete(Employee* this)
+{	int retorno=-1;
+
 	if(this!=NULL)
-	{
+	{retorno=0;
 		free(this);
 	}
+	return retorno;
 }
 
 //INICIO				 GETTER AND SETTER
