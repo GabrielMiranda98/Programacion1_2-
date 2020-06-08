@@ -32,10 +32,6 @@ int employee_setSueldo(Employee* this,int sueldo);
 int employee_getSueldo(Employee* this,int* sueldo);
 
 
-/*ARRAY*/
-int employee_initArray(Employee* arrayPointer[],int limit);
-
-int employee_SearchFreeArray(Employee* arrayPointer[],int limit);
 int employeeSortById(void* empleadoA, void* empleadoB);
 int employeeSortByName(void* empleadoA, void* empleadoB);
 int employeeSortByHours(void* empleadoA, void* empleadoB);

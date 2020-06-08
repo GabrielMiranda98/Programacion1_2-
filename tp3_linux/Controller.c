@@ -45,6 +45,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 	            if ((listaFT=fopen(path,"w+"))==NULL){
 	                printf("Error, no se ha podido abrir el archivo.\n");
 	            }else{
+
 	                printf("Archivo creado. ");
 	                retorno=0;
 	            }
@@ -142,7 +143,6 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 				}
 
 		  return retorno;	}
-
 
 /** \brief Modificar datos de empleado
  *
@@ -390,7 +390,27 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	 int retorno = -1;
+	    Employee* this;
+	    FILE* lista = fopen(path, "w");
+
+	    if(lista==NULL){
+	        printf("Error para guardar\n");
+	        return retorno;
+	    }
+	    fprintf(lista, "id,nombre,horasTrabajadas,sueldo\n");
+	    if(pArrayListEmployee!=NULL){
+	        for(int i=0; i<ll_len(pArrayListEmployee); i++){
+	            this = (Employee*)ll_get(pArrayListEmployee, i);
+	            fprintf(lista, "%d,%s,%d,%d\n", this->id, this->nombre, this->horasTrabajadas, this->sueldo);
+	        }
+	        printf("Archivo Guardado.\n");
+	        retorno = 1;
+	    }
+	    fclose(lista);
+	    return retorno;
+
+
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
@@ -402,6 +422,25 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int retorno = -1;
+	    int len = ll_len(pArrayListEmployee);
+	    Employee* this;
+	    FILE* lista = fopen(path, "wb");
+
+	    if(lista==NULL){
+	        printf("Error para guardar\n");
+	        return retorno;
+	    }
+	    if(pArrayListEmployee!=NULL){
+	        for(int i=0; i<len; i++){
+	            this = (Employee*)ll_get(pArrayListEmployee, i);
+	            fwrite(this,sizeof(Employee),1,lista);
+	        }
+	        printf("Archivo Guardado.\n");
+	        retorno = 1;
+	    }
+	    fclose(lista);
+	    return retorno;
+
 }
 

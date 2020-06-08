@@ -46,8 +46,6 @@ int employee_delete(Employee* this)
 	return retorno;
 }
 
-//INICIO				 GETTER AND SETTER
-
 static int contadorID = 1;
 
 int employee_automaticId()
@@ -147,84 +145,6 @@ int employee_getSueldo(Employee* this,int* sueldo)
 	return retorno;
 }
 
-//FIN 					  GETTER AND SETTER
-//FUNCIONES ARRAY
-int employee_initArray(Employee* arrayPointer[],int limit)
-{
-	int retorno=-1;
-	int i;
-	if(arrayPointer!=NULL && limit>0)
-	{
-		retorno=0;
-		for(i=0;i<limit;i++)
-		{
-			arrayPointer[i]=NULL;
-		}
-	}
-
-	return retorno;
-}
-
-int employee_SearchFreeArray(Employee* arrayPointer[],int limit)
-{
-	int retorno=-1;
-	int i;
-	if(arrayPointer!=NULL && limit>0)
-	{
-		retorno=-2;
-		for(i=0;i<limit;i++)
-		{
-			if(arrayPointer[i]==NULL)
-			{
-				retorno=i;
-				break;
-			}
-		}
-	}
-
-	return retorno;
-
-}
-
-
-int employee_deleteIndexInArray(Employee* arrayPointer[],int indice)
-{
-	int retorno=-1;
-	if(arrayPointer!=NULL && indice>=0&&arrayPointer[indice]!=NULL)
-	{
-		retorno=0;
-		free(arrayPointer[indice]);
-		arrayPointer[indice]=NULL;
-
-	}
-	return retorno;
-}
-int employee_searchForIdArray(Employee* arrayPointer[],int size, int id)
-{
-	int retorno=-1;
-	int i;
-	if(arrayPointer!=NULL&&size>0&&id>=0)
-	{
-		retorno=-2;
-		for(i=0;i<size;i++)
-		{
-			if(arrayPointer[i]!=NULL && arrayPointer[i]->id==id)
-			{
-				retorno=i;
-				break;
-			}
-		}
-	}
-
-	return retorno;
-
-}
-int employee_deleteForIdArray()
-{
-	int retorno=-1;
-	return retorno;
-
-}
 int employeeSortById(void* empleadoA, void* empleadoB){
     int retorno = -1;
     Employee* empA;
