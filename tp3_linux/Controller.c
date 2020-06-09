@@ -36,25 +36,31 @@ int controller_menu()
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
 		int retorno = -1;
-	    int crear = 2;
+	    int crear = 2;// lo inicio como negativo
 	    FILE* listaFT;
-	    if((listaFT=fopen(path, "r+")) == NULL){
+	    if((listaFT=fopen(path, "r+")) == NULL)
+	    {
 	        printf("No se ha encontrado el archivo. ");
-	       utn_getNumero(&crear,"\nDesea crear un archivo?  1-Si 2-No\n","\nError, opcion no valida\n",1,2,3);
-	        if(crear == 1){
-	            if ((listaFT=fopen(path,"w+"))==NULL){
+	        utn_getNumero(&crear,"\nDesea crear un archivo?  1-Si 2-No\n","\nError, opcion no valida\n",1,2,3);
+	        if(crear == 1)
+	        {
+	            if ((listaFT=fopen(path,"w+"))==NULL)
+	            {
 	                printf("Error, no se ha podido abrir el archivo.\n");
-	            }else{
-
+	            }
+	            else
+	            {
 	                printf("Archivo creado. ");
 	                retorno=0;
 	            }
-	        }else
-	        	{
-	            printf("Volviendo al menu\n");
-	        	}
-	    }else{
-	        printf("Archivo encontrado. ");
+	        }
+	        else
+	        {
+	          printf("Volviendo al menu\n");
+	        }
+	    }
+	    else
+	    {   printf("Archivo encontrado. ");
 	        parser_EmployeeFromText(listaFT, pArrayListEmployee);
 	        retorno=0;
 	    }
@@ -70,27 +76,33 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
-	int retorno = -1;
-		    int crear = 2;
+			int retorno = -1;
+		    int crear = 2; //lo inicio como negativo
 		    FILE*listaFB;
-		    if((listaFB=fopen(path, "rb+")) == NULL){
-		        printf("No se ha encontrado el archivo. ");
+		    if((listaFB=fopen(path, "rb+")) == NULL)
+		    {  printf("No se ha encontrado el archivo. ");
 		       utn_getNumero(&crear,"\nDesea crear un archivo?  1-Si 2-No\n","\nError, opcion no valida\n",1,2,3);
-		        if(crear == 1){
-		            if ((listaFB=fopen(path,"wb+"))==NULL){
+		        if(crear == 1)
+		        {       if ((listaFB=fopen(path,"wb+"))==NULL)
+		        		{
 		                printf("Error, no se ha podido abrir el archivo.\n");
-		            }else{
+		        		}
+		        		else
+		        		{
 		                printf("Archivo creado. ");
 		                retorno=0;
-		            }
-		        }else
+		        		}
+		        }
+		        else
 		        	{
 		            printf("Volviendo al menu\n");
 		        	}
-		    }else{
-		        printf("Archivo encontrado. ");
+		    }
+		    else
+		    {   printf("Archivo encontrado. ");
 		        parser_EmployeeFromText(listaFB, pArrayListEmployee);
-		    }return retorno;}
+		    }
+return retorno;}
 
 /** \brief Alta de empleados
  *
@@ -120,7 +132,6 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 					sprintf(sueldoStr,"%d",auxS);
 					sprintf(idStr,"%d",auxId);
 					strcpy(nombreStr,auxN);
-
 
 					auxP = employee_newParametros(idStr, nombreStr, horasStr, sueldoStr);
 					if(!ll_add(pArrayListEmployee,auxP))
@@ -156,77 +167,66 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 
 		int idM;
 	    int option;
-	    int seguir = 2; // y 1 n 2
+	    int seguir = 2;
 	    Employee* this;
 	    char auxN[128];
 	    int auxH;
 	    int auxS;
 	    int i;
-	    if(pArrayListEmployee!=NULL){
-
-
-	    if(utn_getNumero(&idM,"\nIngrese ID del empleado a modificar: \n",
-	   	            		"\nERROR OPCION NO VALIDA\n",0,ll_len(pArrayListEmployee),3)==0)
+	    int retorno=-1;
+	    if(pArrayListEmployee!=NULL)
 	    {
+			if(utn_getNumero(&idM,"\nIngrese ID del empleado a modificar: \n",
+								"\nERROR OPCION NO VALIDA\n",0,ll_len(pArrayListEmployee),3)==0)
+			{
 
-	    for(i=0; i<ll_len(pArrayListEmployee); i++){
-	        this = (Employee*) ll_get(pArrayListEmployee, i);
-	        if(idM == this->id){
-				printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
-				printf("%10d %19s %20d %25d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
+			for(i=0; i<ll_len(pArrayListEmployee); i++){
+				this = (Employee*) ll_get(pArrayListEmployee, i);
+				if(idM == this->id){
+					printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
+					printf("%10d %19s %20d %25d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
 
-	        do{
+				do{
+					utn_getNumero(&option,"\nIngrese dato a modificar:\n1- Nombre\n2- Horas trabajadas\n3- Sueldo\n4- Cancelar\n",
+							"\nERROR OPCION NO VALIDA\n",1,4,3);
 
-	            utn_getNumero(&option,"\nIngrese dato a modificar:\n1- Nombre\n2- Horas trabajadas\n3- Sueldo\n4- Cancelar\n",
-	            		"\nERROR OPCION NO VALIDA\n",1,4,3);
-
-	            switch(option){
-
-	            case 1:
-
-					utn_getName("\nIngrese el nombre del empleado:\n","\nError\n",0,30,3,auxN);
-
-	                employee_setNombre(this, auxN);
-	                printf("Desea continuar modificando al mismo empleado? ");
-	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
-	             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
-	                if(seguir == 2){
-	                    return 0;
-	                }
-	                break;
-	            case 2:
-					utn_getUnsignedInt("\nIngrese las horas trabajadas:","\nError",1,50,1,5000,3,&auxH);
-	                employee_setHorasTrabajadas(this, auxH);
-	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
-	             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
-	                if(seguir == 2){
-	                    return 0;
-	                }
-	                break;
-	            case 3:
-					utn_getUnsignedInt("\nIngrese el sueldo:","\nError",1,30,1,100000,3,&auxS);
-	            	employee_setSueldo(this, auxS);
-	                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
-	             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
-	                if(seguir == 2){
-	                    return 0;
-	                }
-	                break;
-	            case 4:
-	                printf("Modificacion cancelada\n");
-	                return 1;
-	                break;
-	            }
-	        }while(seguir == 1);
-	        }
-	    }}
+					switch(option)
+					{
+					case 1:retorno=0;
+						utn_getName("\nIngrese el nombre del empleado:\n","\nError\n",0,30,3,auxN);
+						employee_setNombre(this, auxN);
+						printf("Desea continuar modificando al mismo empleado? ");
+						utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
+											"\nERROR OPCION NO VALIDA\n",1,2,3);
+						if(seguir == 2){break;}
+						break;
+					case 2: retorno=0;
+						utn_getUnsignedInt("\nIngrese las horas trabajadas:","\nError",1,50,1,5000,3,&auxH);
+						employee_setHorasTrabajadas(this, auxH);
+						utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
+											"\nERROR OPCION NO VALIDA\n",1,2,3);
+						if(seguir == 2){break;}
+						break;
+					case 3: retorno=0;
+						utn_getUnsignedInt("\nIngrese el sueldo:","\nError",1,30,1,100000,3,&auxS);
+						employee_setSueldo(this, auxS);
+						utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
+											"\nERROR OPCION NO VALIDA\n",1,2,3);
+						if(seguir == 2){break;}
+						break;
+					case 4:
+						printf("Modificacion cancelada\n");
+						break;
+					}
+				}while(seguir == 1);
+				}
+			}}
 	    else
 	    {
 	    printf("\nNo se ha encontrado empleado\n");
-	    return -1;
 	    }
 	    } //PRIMER IF NULL
-return -1;
+return retorno;
 }//ULTIMA LLAVE
 
 /** \brief Baja de empleado
@@ -362,18 +362,22 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 
     switch(option){
     case 1:	retorno=0;
+    	printf("Ordenando por id...aguarde unos instantes\n");
         ll_sort(pArrayListEmployee, employeeSortById, 0);
         printf("Ordenamiento por id realizado!\n");
         break;
     case 2:	retorno=0;
+		printf("Ordenando por nombre...aguarde unos instantes\n");
         ll_sort(pArrayListEmployee, employeeSortByName, 0);
         printf("Ordenamiento por nombre realizado!\n");
         break;
     case 3:	retorno=0;
+		printf("Ordenando por horas trabajadas...aguarde unos instantes\n");
         ll_sort(pArrayListEmployee, employeeSortByHours, 0);
         printf("Ordenamiento por horas trabajadas realizado!\n");
         break;
     case 4:	retorno=0;
+    	printf("Ordenando por salario...aguarde unos instantes\n");
         ll_sort(pArrayListEmployee, employeeSortBySalary, 0);
         printf("Ordenamiento por salario realizado!\n");
         break;
