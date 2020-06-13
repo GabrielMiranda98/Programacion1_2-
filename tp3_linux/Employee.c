@@ -5,7 +5,9 @@
 
 #include "utn.h"
 
-
+/** \brief Crea un empleado
+ * \return auxP Employee*
+ */
 Employee* employee_new(void)
 {		Employee* auxP;
 
@@ -14,7 +16,13 @@ Employee* employee_new(void)
 	return auxP;
 
 }
-
+/** \brief Crea un empleado con parametros
+ * \param idStr char*
+ * \param nombreStr char*
+ * \param horasTrabajadasStr char*
+ * \param sueldo char*
+ * \return this Employee*
+ */
 Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajadasStr, char* sueldo)
 {
 	Employee* auxP=NULL;
@@ -37,6 +45,10 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 		  return auxP;
 		}
 
+/** \brief Elimina un empleado
+ * \param this Employee*
+ * \return 0 todo bien -1 error
+ */
 int employee_delete(Employee* this)
 {	int retorno=-1;
 
@@ -46,14 +58,24 @@ int employee_delete(Employee* this)
 	}
 	return retorno;
 }
-
+/** \brief Establece el ID de un empleado
+ * \param contadorID int
+ * \return numero de inicio 1001
+ */
 static int contadorID = 1001;
-
+/** \brief Suma +1 el ID de un empleado
+ * \param contadorID int
+ * \return lo aumenta en 1
+ */
 int employee_automaticId()
 {
 	return contadorID++;
 }
-
+/** \brief Establece el ID de un empleado
+ * \param this Employee*
+ * \param id int
+ * \return 0 todo bien -1 error
+ */
 int employee_setId(Employee* this,int id)
 {
 	int retorno = -1;
@@ -65,6 +87,11 @@ int employee_setId(Employee* this,int id)
 		}
 		return retorno;
 }
+/** \brief Devuelve el ID de un empleado
+ * \param this Employee*
+ * \param id int*
+ * \return 0 todo bien -1 error
+ */
 int employee_getId(Employee* this,int* id)
 {
 	int retorno = -1;
@@ -76,7 +103,11 @@ int employee_getId(Employee* this,int* id)
 		}
 		return retorno;
 }
-
+/** \brief Establece el nombre de un empleado
+ * \param this Employee*
+ * \param nombre char*
+ * \return 0 todo bien -1 error
+ */
 int employee_setNombre(Employee* this,char* nombre)
 {
 	int retorno = -1;
@@ -87,6 +118,11 @@ int employee_setNombre(Employee* this,char* nombre)
 
 	return retorno;
 }
+/** \brief Devuelve el nombre de un empleado
+ * \param this Employee*
+ * \param nombre char*
+ * \return 0 todo bien -1 error
+ */
 int employee_getNombre(Employee* this,char* nombre)
 {
 	int retorno = -1;
@@ -97,7 +133,11 @@ int employee_getNombre(Employee* this,char* nombre)
 	}
 	return retorno;
 }
-
+/** \brief Establece las horas trabajadas de un empleado
+ * \param this Employee*
+ * \param horasTrabajadas int
+ * \return 0 todo bien -1 error
+ */
 int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
 {
 	int retorno = -1;
@@ -110,6 +150,12 @@ int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
 
 		return retorno;
 }
+
+/** \brief Devuelve las horas trabajadas de un empleado
+ * \param this Employee*
+ * \param horasTrabajadas int*
+ * \return 0 todo bien -1 error
+ */
 int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 {
 	int retorno = -1;
@@ -121,7 +167,11 @@ int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 			}
 			return retorno;
 }
-
+/** \brief Establece el sueldo de un empleado
+ * \param this Employee*
+ * \param sueldo int
+ * \return 0 todo bien -1 error
+ */
 int employee_setSueldo(Employee* this,int sueldo)
 {
 	int retorno = -1;
@@ -134,6 +184,12 @@ int employee_setSueldo(Employee* this,int sueldo)
 
 	return retorno;
 }
+
+/** \brief Devuelve el sueldo de un empleado
+ * \param this Employee*
+ * \param sueldo int*
+ * \return 0 todo bien -1 error
+ */
 int employee_getSueldo(Employee* this,int* sueldo)
 {
 	int retorno = -1;
@@ -145,7 +201,11 @@ int employee_getSueldo(Employee* this,int* sueldo)
 	}
 	return retorno;
 }
-
+/** \brief Compara dos empleados por ID
+ * \param empleadoA void*
+ * \param empleadoB void*
+ * \return int
+ */
 int employeeSortById(void* empleadoA, void* empleadoB){
     int retorno = -1;
     int id1;
@@ -170,7 +230,11 @@ int employeeSortById(void* empleadoA, void* empleadoB){
     }
     return retorno;
 }
-
+/** \brief Compara dos empleados por nombre
+ * \param empleadoA void*
+ * \param empleadoB void*
+ * \return int
+ */
 int employeeSortByName(void* empleadoA, void* empleadoB){
     int retorno = 0;
     char n1[50];
@@ -192,7 +256,11 @@ int employeeSortByName(void* empleadoA, void* empleadoB){
 
     return retorno;
 }
-
+/** \brief Compara dos empleados por horas trabajadas
+ * \param empleadoA void*
+ * \param empleadoB void*
+ * \return int
+ */
 int employeeSortByHours(void* empleadoA, void* empleadoB){
     int retorno = -1;
     int h1;
@@ -215,7 +283,11 @@ int employeeSortByHours(void* empleadoA, void* empleadoB){
     }
     return retorno;
 }
-
+/** \brief Compara dos empleados por sueldo
+ * \param empleadoA void*
+ * \param empleadoB void*
+ * \return int
+ */
 int employeeSortBySalary(void* empleadoA, void* empleadoB){
     int retorno = -1;
     int s1;
