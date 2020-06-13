@@ -36,7 +36,7 @@ int controller_menu()
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
 		int retorno = -1;
-	    int crear = 2;// lo inicio como negativo
+	    int crear = 2;
 	    FILE* listaFT;
 	    if((listaFT=fopen(path, "r+")) == NULL)
 	    {
@@ -60,7 +60,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 	        }
 	    }
 	    else
-	    {   printf("Archivo encontrado. ");
+	    {   printf("Archivo encontrado y cargado. ");
 	        parser_EmployeeFromText(listaFT, pArrayListEmployee);
 	        retorno=0;
 	    }
@@ -77,7 +77,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
 			int retorno = -1;
-		    int crear = 2; //lo inicio como negativo
+		    int crear = 2;
 		    FILE*listaFB;
 		    if((listaFB=fopen(path, "rb+")) == NULL)
 		    {  printf("No se ha encontrado el archivo. ");
@@ -99,8 +99,8 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 		        	}
 		    }
 		    else
-		    {   printf("Archivo encontrado. ");
-		        parser_EmployeeFromText(listaFB, pArrayListEmployee);
+		    {   printf("Archivo encontrado y cargado. ");
+		        parser_EmployeeFromBinary(listaFB, pArrayListEmployee);
 		    }
 return retorno;}
 
@@ -174,6 +174,8 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 	    int auxS;
 	    int i;
 	    int retorno=-1;
+	    int auxIdThis, auxHsThis,auxSuThis;
+	    				char auxNomThis[50];
 	    if(pArrayListEmployee!=NULL)
 	    {
 			if(utn_getNumero(&idM,"\nIngrese ID del empleado a modificar: \n",
@@ -182,10 +184,13 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 
 			for(i=0; i<ll_len(pArrayListEmployee); i++){
 				this = (Employee*) ll_get(pArrayListEmployee, i);
-				if(idM == this->id){
+				employee_getHorasTrabajadas(this,&auxHsThis);
+			    employee_getId(this,&auxIdThis);
+				employee_getNombre(this,auxNomThis);
+				employee_getSueldo(this,&auxSuThis);
+				if(idM == auxIdThis){
 					printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
-					printf("%10d %19s %20d %25d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
-
+					printf("%10d %19s %20d %25d\n", auxIdThis,auxNomThis,auxHsThis,auxSuThis);
 				do{
 					utn_getNumero(&option,"\nIngrese dato a modificar:\n1- Nombre\n2- Horas trabajadas\n3- Sueldo\n4- Cancelar\n",
 							"\nERROR OPCION NO VALIDA\n",1,4,3);
@@ -216,9 +221,11 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 						break;
 					case 4:
 						printf("Modificacion cancelada\n");
+						seguir=2;
 						break;
+
 					}
-				}while(seguir == 1);
+				}while(seguir != 2);
 				}
 			}}
 	    else
@@ -238,77 +245,44 @@ return retorno;
  */
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
-	int retorno=-1;
 	int idM;
-    int option;
-    int seguir = 2; // y 1 n 2
-    Employee* this;
-    char auxN[128];
-    int auxH;
-    int auxS;
-    int i;
-    if(pArrayListEmployee!=NULL){
+		    int option;
+		    Employee* this;
+		    int i;
+		    int retorno=-1;
+		    int auxIdThis, auxHsThis,auxSuThis;
+		    				char auxNomThis[50];
+		    if(pArrayListEmployee!=NULL)
+		    {
+				if(utn_getNumero(&idM,"\nIngrese ID del empleado a dar de baja: \n",
+									"\nERROR OPCION NO VALIDA\n",0,ll_len(pArrayListEmployee),3)==0)
+				{
 
+				for(i=0; i<idM; i++){
+					this = (Employee*) ll_get(pArrayListEmployee, i);
+					employee_getHorasTrabajadas(this,&auxHsThis);
+				    employee_getId(this,&auxIdThis);
+					employee_getNombre(this,auxNomThis);
+					employee_getSueldo(this,&auxSuThis);
+					if(idM == auxIdThis){
+						printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
+						printf("%10d %19s %20d %25d\n", auxIdThis,auxNomThis,auxHsThis,auxSuThis);
 
-    if(utn_getNumero(&idM,"\nIngrese ID del empleado a modificar: \n",
-   	            		"\nERROR OPCION NO VALIDA\n",0,ll_len(pArrayListEmployee),3)==0)
-    {
-
-    for(i=0; i<ll_len(pArrayListEmployee); i++){
-        this = (Employee*) ll_get(pArrayListEmployee, i);
-        if(idM == this->id){
-			printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
-			printf("%10d %19s %20d %25d\n", this->id,this->nombre,this->horasTrabajadas,this->sueldo);
-
-        do{
-
-            utn_getNumero(&option,"\nIngrese dato a modificar:\n1- Nombre\n2- Horas trabajadas\n3- Sueldo\n4- Cancelar\n",
-            		"\nERROR OPCION NO VALIDA\n",1,4,3);
-
-            switch(option){
-
-            case 1:
-
-				utn_getName("\nIngrese el nombre del empleado:\n","\nError\n",0,30,3,auxN);
-
-                employee_setNombre(this, auxN);
-                printf("Desea continuar modificando al mismo empleado? ");
-                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
-             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
-                if(seguir == 2){
-                    retorno=0;            }
-                break;
-            case 2:
-				utn_getUnsignedInt("\nIngrese las horas trabajadas:","\nError",1,50,1,5000,3,&auxH);
-                employee_setHorasTrabajadas(this, auxH);
-                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
-             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
-                if(seguir == 2){
-                    retorno=0;                }
-                break;
-            case 3:
-				utn_getUnsignedInt("\nIngrese el sueldo:","\nError",1,30,1,100000,3,&auxS);
-            	employee_setSueldo(this, auxS);
-                utn_getNumero(&seguir,"\nDesea seguir modificando al mismo empleado? 1-SI \t2-NO: \n",
-             	            		"\nERROR OPCION NO VALIDA\n",1,2,3);
-                if(seguir == 2){
-                    retorno=0;
-                }
-                break;
-            case 4:
-                printf("Modificacion cancelada\n");
-                retorno=0;
-                break;
-            }
-        }while(seguir == 1);
-        }
-    }}
-    else
-    {
-    printf("\nNo se ha encontrado empleado\n");
-    }
-    } //PRIMER IF NULL
-return retorno;
+					utn_getNumero(&option,"\nDesea darlo de baja?:\n1- SI\n2-NO\n",
+								"\nERROR OPCION NO VALIDA\n",1,2,3);
+	            if(option ==2){
+	                printf("Eliminacion cancelada, volviendo al menu...\n");
+	                retorno= -1;
+	            }else{
+	                ll_remove(pArrayListEmployee, i);
+	                printf("Empleado %d eliminado. \n", idM);
+	                free(this);
+	                retorno= 0;
+	            }}}
+	        }
+	    }
+	    printf("No se ha encontrado empleado con ID %d. \n", idM);
+	    return retorno;
 }
 
 /** \brief Listar empleados
@@ -322,21 +296,23 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
 	    int retorno = -1;
 	    int i;
+	    int auxIdThis=0, auxHsThis=0,auxSuThis=0;
+	    char auxNomThis[50];
 	    Employee* auxP=NULL;
 	    if((ll_len(pArrayListEmployee))>0 &&pArrayListEmployee!=NULL){
 
 	    	printf("\tID\t\tNOMBRE\t\tHORAS TRABAJADAS\t\tSUELDO\n");
 	        for(i=0; i<ll_len(pArrayListEmployee); i++){
-	            auxP = (Employee*)ll_get(pArrayListEmployee, i);  //NO ME LO CARGA
+	            auxP = (Employee*)ll_get(pArrayListEmployee, i);
 
 
+			    employee_getId(auxP,&auxIdThis);
+				employee_getNombre(auxP,auxNomThis);
+			    employee_getHorasTrabajadas(auxP,&auxHsThis);
+				employee_getSueldo(auxP,&auxSuThis);
 	            if(auxP != NULL)
 	            {	retorno=0;
-	            	printf("%10d %19s %20d %25d\n", auxP->id,auxP->nombre,auxP->horasTrabajadas,auxP->sueldo);
-	            }
-	            else
-	            {
-	            	printf("\nTHIS NULO\n");
+	            	printf("%10d %19s %20d %25d\n", auxIdThis,auxNomThis,auxHsThis,auxSuThis);
 	            }
 	        }
 	    }else{
@@ -358,7 +334,7 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
     int retorno = -1;
     int option;
 
-    utn_getNumero(&option,"\nOrdenamiento por: 1-ID\n 2-NOMBRE\n 3-HORAS TRABAJADAS\n 4-SALARIO\n","\n Error\n",1,4,3);
+    utn_getNumero(&option,"\nOrdenamiento por: \n1-ID\n 2-NOMBRE\n 3-HORAS TRABAJADAS\n 4-SALARIO\n","\n Error\n",1,4,3);
 
     switch(option){
     case 1:	retorno=0;
@@ -395,6 +371,8 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
 	 int retorno = -1;
+	    int auxIdThis, auxHsThis,auxSuThis;
+	    char auxNomThis[50];
 	    Employee* this;
 	    FILE* lista = fopen(path, "w");
 
@@ -406,7 +384,11 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 	    if(pArrayListEmployee!=NULL){
 	        for(int i=0; i<ll_len(pArrayListEmployee); i++){
 	            this = (Employee*)ll_get(pArrayListEmployee, i);
-	            fprintf(lista, "%d,%s,%d,%d\n", this->id, this->nombre, this->horasTrabajadas, this->sueldo);
+	    		employee_getHorasTrabajadas(this,&auxHsThis);
+	    	    employee_getId(this,&auxIdThis);
+	    		employee_getNombre(this,auxNomThis);
+	    		employee_getSueldo(this,&auxSuThis);
+	            fprintf(lista, "%d,%s,%d,%d\n", auxIdThis, auxNomThis,auxHsThis, auxSuThis);
 	        }
 	        printf("Archivo Guardado.\n");
 	        retorno = 1;
@@ -447,4 +429,3 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 	    return retorno;
 
 }
-

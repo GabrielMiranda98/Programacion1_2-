@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Employee.h"
+
 #include "utn.h"
 
 
@@ -46,7 +47,7 @@ int employee_delete(Employee* this)
 	return retorno;
 }
 
-static int contadorID = 1;
+static int contadorID = 1001;
 
 int employee_automaticId()
 {
@@ -115,7 +116,7 @@ int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
 
 			if(this!=NULL && horasTrabajadas>0)
 			{
-				*horasTrabajadas = this->id;
+				*horasTrabajadas = this->horasTrabajadas;
 				retorno = 0;
 			}
 			return retorno;
@@ -139,7 +140,7 @@ int employee_getSueldo(Employee* this,int* sueldo)
 
 	if(this!=NULL && sueldo>0)
 	{
-		*sueldo = this->id;
+		*sueldo = this->sueldo;
 		retorno = 0;
 	}
 	return retorno;
@@ -171,23 +172,22 @@ int employeeSortById(void* empleadoA, void* empleadoB){
 }
 
 int employeeSortByName(void* empleadoA, void* empleadoB){
-    int retorno = -1;
+    int retorno = 0;
     char n1[50];
     char n2[50];
 
-    Employee* empA;
-    Employee* empB;
-
 
     if(empleadoA !=NULL && empleadoB !=NULL){
-        empA = (Employee*) empleadoA;
-        empB = (Employee*) empleadoB;
-        employee_getNombre(empA,n1);
-         employee_getNombre(empB,n2);
-
-
-
-        retorno = strcmp(n2, n1);
+        employee_getNombre(empleadoA,n1);
+        employee_getNombre(empleadoB,n2);
+         if(strcmp(n1, n2)>0)
+         {
+        	 retorno=1;
+         }
+         else if(strcmp(n2, n1)>0)
+         {
+        	 retorno=-1;
+         }
     }
 
     return retorno;

@@ -1,12 +1,13 @@
 /*
  * utn.h
  *
- *  Created on: 25 abr. 2020
- *      Author: Nahu_
+ *  Created on: 12 jun. 2020
+ *      Author: cgabrielmiranda
  */
 
 #ifndef UTN_H_
 #define UTN_H_
+
 
 int getString(char* msg, char* msgError, int min, int max, int* reintentos, char* resultado);
 
@@ -48,5 +49,6 @@ int imprimirSubMenu();
 
 
 int utn_getNumero(int* pResultado,char * mensaje, char * mensajeError , int minimo , int maximo , int reintentos);
+
 
 #endif /* UTN_H_ */

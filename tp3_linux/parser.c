@@ -60,7 +60,7 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
             i++;
     }else{
             if(!feof(pFile)){
-                printf("\n!!! - Se ha producido un error llegando al final del archivo.");
+                printf("\n Se ha producido un error");
                 break;
             }else{
                 printf("\nFinal del archivo. Bytes leidos %d", i);
